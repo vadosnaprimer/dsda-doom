@@ -44,6 +44,7 @@
 
 int capturing_video = 0;
 static const char *vid_fname;
+static int frame_count = 0;
 
 typedef struct
 { // information on a running pipe
@@ -590,6 +591,11 @@ void I_CaptureFrame (void)
   {
     if (fwrite (vid, renderW * renderH * 3, 1, videopipe.f_stdin) != 1)
       lprintf(LO_WARN, "I_CaptureFrame: error writing videopipe.\n");
+
+    int one_minute = cap_fps * 60;
+    if (frame_count++ > 0 && frame_count % one_minute == 0)
+      lprintf(LO_INFO, "%d minute(s) of video captured.\n", frame_count / one_minute);
+
     //Z_Free (vid); // static buffer
   }
 
