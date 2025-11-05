@@ -568,6 +568,11 @@ static arg_config_t arg_config[dsda_arg_count] = {
     "rebuild the blockmap (ignore BLOCKMAP lump)",
     arg_null,
   },
+  [dsda_arg_logrng] = {
+    "-logrng", NULL, NULL,
+    "logs info about P_Random() calls",
+    arg_null,
+  },
   [dsda_arg_force_monster_avoid_hazards] = {
     "-force_monster_avoid_hazards", NULL, NULL,
     "sets a special flag to compensate for sync errors in certain demos",

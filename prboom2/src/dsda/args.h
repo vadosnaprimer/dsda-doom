@@ -124,6 +124,7 @@ typedef enum {
   dsda_arg_emulate,
   dsda_arg_doom95,
   dsda_arg_blockmap,
+  dsda_arg_logrng,
   dsda_arg_force_monster_avoid_hazards,
   dsda_arg_force_remove_slime_trails,
   dsda_arg_force_no_dropoff,

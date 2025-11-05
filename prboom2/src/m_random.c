@@ -42,6 +42,7 @@
 #include "m_random.h"
 #include "lprintf.h"
 #include "tables.h"
+#include <dsda/args.h>
 
 //
 // M_Random
@@ -94,7 +95,21 @@ rng_t rng;     // the random number state
 
 unsigned int rngseed = 1993;   // killough 3/26/98: The seed
 
-int (P_Random)(pr_class_t pr_class)
+char *fname(char *path)
+{
+    char *aux = path;
+
+    /* Go to end of string, so you don't need strlen */
+    while (*path++) ;
+
+    /* Find the last occurence of \ */
+    while (*path-- != '\\' && path != aux) ;
+
+    /* It must ignore the \ */
+    return (aux == path) ? path : path + 2;
+}
+
+int (P_Random)(pr_class_t pr_class, const char *function, const char *file, int line)
 {
   // killough 2/16/98:  We always update both sets of random number
   // generators, to ensure repeatability if the demo_compatibility
@@ -124,6 +139,9 @@ int (P_Random)(pr_class_t pr_class)
   // killough 3/26/98: add pr_class*2 to addend
 
   rng.seed[pr_class] = boom * 1664525ul + 221297ul + pr_class*2;
+  
+  if (dsda_Flag(dsda_arg_logrng) && pr_class != pr_misc)
+    lprintf(LO_INFO, "tic: %d idx: %3d seed: %10u - %s:%d %s()\n", true_logictic, rng.rndindex, rng.seed[pr_all_in_one], fname(file), line, function);
 
   if (demo_compatibility)
     return rndtable[compat];
